@@ -8,12 +8,36 @@
     "start": "next start"
   },
   "dependencies": {
+    "@clerk/nextjs": "^6.31.6",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@inngest/agent-kit": "^0.9.0",
+    "@langchain/community": "^0.3.54",
+    "@langchain/core": "^0.3.73",
+    "@mui/icons-material": "^7.3.1",
+    "@mui/material": "^7.3.1",
+    "@mui/styled-engine-sc": "^7.3.1",
+    "@xyflow/react": "^12.8.4",
+    "axios": "^1.11.0",
+    "dotenv": "^16.4.5",
+    "drizzle-orm": "^0.44.5",
+    "imagekit": "^6.0.0",
+    "inngest": "^3.40.1",
+    "next": "15.5.2",
+    "pdf-parse": "^1.1.1",
+    "pg": "^8.16.3",
     "react": "19.1.0",
     "react-dom": "19.1.0",
-    "next": "15.5.2"
+    "react-markdown": "^10.1.0",
+    "recharts": "^3.2.1",
+    "styled-components": "^6.1.19",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
-    "tailwindcss": "^4"
+    "@types/pg": "^8.15.5",
+    "drizzle-kit": "^0.31.4",
+    "tailwindcss": "^4",
+    "tsx": "^4.20.5"
   }
 }
