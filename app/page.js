@@ -4,18 +4,18 @@ import Link from "next/link";
 import { useEffect } from "react";
 import { useUser } from "@clerk/nextjs";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 export default function LandingPage() {
   const { user, isLoaded } = useUser();
-  useEffect(() => {
-    if (user && isLoaded) getUser();
-  }, [user, isLoaded]);
-
+  const router = useRouter();
   async function getUser() {
-    const log = await axios.post("/api/user", {
-      name: user?.firstName,
-      email: user?.primaryEmailAddress?.emailAddress,
-    });
-    console.log(log.data);
+    if (isLoaded && user) {
+      const log = await axios.post("/api/user", {
+        name: user?.firstName,
+        email: user?.primaryEmailAddress?.emailAddress,
+      });
+      router.push("/workspace");
+    }
   }
   return (
     isLoaded && (
@@ -83,14 +83,15 @@ export default function LandingPage() {
                 Discover your strengths, explore career paths, and take the next
                 step towards a brighter future with AI-powered guidance.
               </p>
-
               <div className="mt-8 flex flex-col sm:flex-row gap-4">
-                <Link
-                  href="/workspace"
-                  className="inline-flex items-center justify-center rounded-lg bg-blue-600 text-white px-6 py-3 font-semibold shadow hover:scale-105 hover:bg-blue-700 transition transform"
+                <div
+                  className="inline-flex items-center justify-center rounded-lg
+                  bg-blue-600 text-white px-6 py-3 font-semibold shadow
+                  hover:scale-105 hover:bg-blue-700 transition transform"
+                  onClick={getUser}
                 >
-                  Explore Now
-                </Link>
+                  Explore
+                </div>
                 <a
                   href="#process"
                   className="inline-flex items-center justify-center rounded-lg border border-blue-600 px-6 py-3 text-blue-600 hover:bg-blue-50 transition transform hover:scale-105"
