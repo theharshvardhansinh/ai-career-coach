@@ -19,13 +19,14 @@ import Typography from "@mui/material/Typography";
 import MenuIcon from "@mui/icons-material/Menu";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import PersonIcon from "@mui/icons-material/Person";
-import SmartToyIcon from "@mui/icons-material/SmartToy";
+import { Book } from "@mui/icons-material";
 import Link from "next/link";
-import { AssignmentIndRounded, Book } from "@mui/icons-material";
+import { UserButton } from "@clerk/nextjs";
+
 const drawerWidth = 240;
 
 function WorkspaceLayout(props) {
-    const { window } = props;
+    const { window, children } = props;
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const [isClosing, setIsClosing] = React.useState(false);
 
@@ -46,17 +47,18 @@ function WorkspaceLayout(props) {
 
     const drawer = (
         <div>
-            <Toolbar>
+            <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
                 <Typography variant="h6" noWrap component="div">
                     Workspace
                 </Typography>
+                <UserButton />
             </Toolbar>
             <Divider />
             <List>
                 {[
-                    { text: "Dashboard", icon: <DashboardIcon />, nav: '/workspace' },
-                    { text: "Aptitude", icon: <Book />, nav: '/workspace/aptitude' },
-                    { text: "Profile", icon: <PersonIcon />, nav: '/workspace/profile' }
+                    { text: "Dashboard", icon: <DashboardIcon />, nav: "/workspace" },
+                    { text: "Aptitude", icon: <Book />, nav: "/workspace/aptitude" },
+                    { text: "Profile", icon: <PersonIcon />, nav: "/workspace/profile" },
                 ].map((item) => (
                     <ListItem key={item.text} disablePadding>
                         <Link href={item.nav} className="w-full">
@@ -71,11 +73,22 @@ function WorkspaceLayout(props) {
         </div>
     );
 
-    const container = window !== undefined ? () => window().document.body : undefined;
+    const container =
+        window !== undefined ? () => window().document.body : undefined;
 
     return (
         <Box sx={{ display: "flex" }}>
             <CssBaseline />
+            {/* Top AppBar */}
+            <AppBar
+                position="fixed"
+                sx={{
+                    width: { sm: `calc(100% - ${drawerWidth}px)` },
+                    ml: { sm: `${drawerWidth}px` },
+                }}
+            >
+            </AppBar>
+
             {/* Sidebar */}
             <Box
                 component="nav"
@@ -93,10 +106,8 @@ function WorkspaceLayout(props) {
                         display: { xs: "block", sm: "none" },
                         "& .MuiDrawer-paper": { boxSizing: "border-box", width: drawerWidth },
                     }}
-                    slotProps={{
-                        root: {
-                            keepMounted: true, // Better open performance on mobile
-                        },
+                    ModalProps={{
+                        keepMounted: true, // Better open performance on mobile
                     }}
                 >
                     {drawer}
@@ -114,12 +125,26 @@ function WorkspaceLayout(props) {
                     {drawer}
                 </Drawer>
             </Box>
+
+            {/* Main Content */}
+            <Box
+                component="main"
+                sx={{
+                    flexGrow: 1,
+                    p: 3,
+                    width: { sm: `calc(100% - ${drawerWidth}px)` },
+                }}
+            >
+                <Toolbar /> {/* Push content below AppBar */}
+                {children}
+            </Box>
         </Box>
     );
 }
 
 WorkspaceLayout.propTypes = {
     window: PropTypes.func,
+    children: PropTypes.node,
 };
 
 export default WorkspaceLayout;
