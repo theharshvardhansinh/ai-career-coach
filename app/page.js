@@ -23,13 +23,19 @@ export default function LandingPage() {
   const { user, isLoaded } = useUser();
   const router = useRouter();
 
+  if (!user) {
+    router.push("/sign-in");
+    return;
+  }
   async function getUser() {
     try {
       if (isLoaded && user) {
-        await axios.post("/api/user", {
+        console.log("krishna");
+        const log = await axios.post("/api/user", {
           name: user.firstName,
           email: user.primaryEmailAddress?.emailAddress,
         });
+        console.log(log.data);
         router.push("/workspace");
       }
     } catch (err) {
